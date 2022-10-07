@@ -66,6 +66,7 @@ function BottomTabNavigator() {
         name="TabOne"
         component={TabOneScreen}
         options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
+          //headerTitleAlign: 'center',
           title: 'Tab One',
           tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
           headerRight: () => (
@@ -88,8 +89,13 @@ function BottomTabNavigator() {
         name="TabTwo"
         component={TabTwoScreen}
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Login',
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: 'stealblue',
+          },
+          tabBarActiveBackgroundColor: '#313131',
+          tabBarIcon: ({ color }) => <TabBarIcon name="university" color={color} />,
         }}
       />
     </BottomTab.Navigator>
@@ -103,5 +109,5 @@ function TabBarIcon(props: {
   name: React.ComponentProps<typeof FontAwesome>['name'];
   color: string;
 }) {
-  return <FontAwesome size={30} style={{ marginBottom: -3 }} {...props} />;
+  return <FontAwesome size={25} style={{ marginBottom: -3 }} {...props} />;
 }
