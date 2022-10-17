@@ -9,7 +9,7 @@ const Login = () => {
             <TextInput placeholder="Login" style={styles.textInput} />
             <TextInput placeholder="Password" style={styles.textInput} autoCorrect={false} secureTextEntry />
             <View style={{width: 200, marginTop: 10}}>
-                <Button title={"Login"}/>
+                <Button title={"Login"} onPress={()=>{}}/>
             </View>
         </View>
     )   

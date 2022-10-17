@@ -236,6 +236,7 @@ const Subjects = ({navigation}: RootStackScreenProps<"Modal">) => {
 
 
 const styles = StyleSheet.create({
+
     Subject: {
         //opacity: 0.1,
         //fontSize: 20,
@@ -245,7 +246,7 @@ const styles = StyleSheet.create({
     Node: {
         width: width * 0.80,
         height: height * 0.10,
-        backgroundColor: '#e9eaee',
+        backgroundColor: '#f4f4f4',
         justifyContent: 'center',
         margin: 10,
         borderWidth: 3,
