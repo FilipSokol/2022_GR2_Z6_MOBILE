@@ -8,6 +8,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
+import { useState } from 'react';
 import { ColorSchemeName, Pressable } from 'react-native';
 
 import Colors from '../constants/Colors';
@@ -15,9 +16,10 @@ import useColorScheme from '../hooks/useColorScheme';
 import Grades from '../screens/Grades';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
+import Register from '../screens/Register';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from '../types';
+import { RootHomeParamList, RootHomeStackParamList, RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
 export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
@@ -37,9 +39,20 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
+  let logged = true;
+
   return (
     <Stack.Navigator>
-      <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+      {logged ? (
+        <>
+        <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+        </>
+      ) : (
+        <>
+        <Stack.Screen name="Root" component={BottomHomeTabNavigator} options={{ headerShown: false }} />
+        {/* <Stack.Screen name="Register" component={BottomHomeTabNavigator} options={{ headerShown: false }} />   */}
+        </>
+      )}
       <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen name="Modal" component={ModalScreen} options={{title: "Subjects", headerTitleAlign: 'center'}} />
@@ -60,10 +73,11 @@ function BottomTabNavigator() {
 
   return (
     <BottomTab.Navigator
-      initialRouteName="TabOne"
+      initialRouteName="TabTwo"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}>
+      { 
       <BottomTab.Screen
         name="TabOne"
         component={TabOneScreen}
@@ -92,6 +106,7 @@ function BottomTabNavigator() {
           ),
         })}
       />
+      }
       <BottomTab.Screen
         name="TabTwo"
         component={TabTwoScreen}
@@ -102,13 +117,55 @@ function BottomTabNavigator() {
             backgroundColor: 'stealblue',
           },
           tabBarActiveBackgroundColor: '#313131',
-          tabBarIcon: ({ color }) => <TabBarIcon name="university" color={color} />,
+          tabBarIcon: ({ color }) => <TabBarIcon name="university" color={color} 
+          
+          />,
         }}
       />
     </BottomTab.Navigator>
   );
 }
 
+const HomeTab =  createBottomTabNavigator<RootHomeStackParamList>();
+
+function BottomHomeTabNavigator(){
+
+  return(
+  <HomeTab.Navigator
+    initialRouteName='Login'
+  >
+    <HomeTab.Screen 
+      name={"Login"}
+      component={TabTwoScreen}
+      options={{
+        title: 'Login',
+        headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: 'stealblue',
+        },
+        tabBarActiveBackgroundColor: '#313131',
+        tabBarIcon: ({ color }) => <TabBarIcon name="university" color={color} />
+        }}
+      />
+
+
+    <HomeTab.Screen 
+      name={"Register"}
+      component={Register}
+      options={{
+        title: 'Register',
+        headerTitleAlign: 'center',
+        headerStyle: {
+          backgroundColor: 'stealblue',
+        },
+        tabBarActiveBackgroundColor: '#313131',
+        tabBarIcon: ({ color }) => <TabBarIcon name="university" color={color} />
+        }}
+      />
+
+  </HomeTab.Navigator>
+  )
+}
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */

@@ -2,6 +2,8 @@ import { Dimensions, Pressable, ScrollView, StyleSheet, Text, View } from "react
 import React, { useEffect, useState } from "react";
 import { RootStackScreenProps } from "../types";
 import { GradeProps } from "./Subjects";
+import COLORS from "../constants/Colors_Screens";
+import Separator from "../components/Separator";
 
 const {width, height} = Dimensions.get("window")
 
@@ -32,11 +34,12 @@ const Grades = ({ route }: RootStackScreenProps<"Grades">) => {
 
 
     return (
-        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: "white"}}>
             {/* <View style={[styles.separator, {backgroundColor: "#eee"}]} /> */}
             <ScrollView>
                 <Text style={{fontSize: 20, alignSelf: 'center'}}>Subject-name</Text>
                 {avg? <Text style={{fontSize: 20, alignSelf: 'center'}}>Average grade: {avg}</Text> : null}
+                <Separator />
                 {grades.grade.map((value: GradeProps, key) => {
                     //console.log(key + 1);
                     number = key + 1;
@@ -44,14 +47,15 @@ const Grades = ({ route }: RootStackScreenProps<"Grades">) => {
                     //console.log("number: ", number);
                     //console.log("marks: ", marks)
                     //setNum(key + 1);
-                    color = (value.grade > 2 ? "green": "red")
+                    color = (value.grade > 2 ? "COLORS.lightgrey": "red")
                     //setMarks(marks + value.grade);
                     return (
-                        <Pressable key={key.toString()} style={styles.container}>
+                        <Pressable key={key.toString()} style={styles.container} android_ripple={{color: 'powderblue'}}>
                             <View style={styles.grade}>
                                 <Text style={{color: color}}>{value.date}</Text>
                                 <Text style={{color: color}}>{value.description}</Text>
                                 <Text style={{color: color}}>{value.grade}</Text>
+
                             </View>
                         </Pressable>
                     )
@@ -66,17 +70,17 @@ const styles = StyleSheet.create({
     container: {
         //alignItems: 'center',
         margin: 20,
-        backgroundColor: '#e9eaee',
+        backgroundColor: COLORS.lightgrey,
         borderWidth: 3,
-        borderColor: 'whitesmoke',
+        borderColor: COLORS.green,
         borderRadius: 10,
         shadowOpacity: 0.8,
-        elevation: 6,
         shadowRadius: 15,
         width: width * 0.80,
         height: height * 0.10,
         alignItems: 'center', 
-        justifyContent: 'center'
+        justifyContent: 'center',
+        padding: 10,
     },
     grade: {
         //margin: 1,
@@ -87,11 +91,7 @@ const styles = StyleSheet.create({
         alignItems: 'center'
         
     },
-    separator: {
-        marginVertical: 30,
-        height: 1,
-        width: '80%',
-    },
+
     
 })
 

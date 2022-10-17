@@ -4,15 +4,16 @@ import EditScreenInfo from '../components/EditScreenInfo';
 import { Text, View } from '../components/Themed';
 import Login from './Login';
 import DontHaveAccount from './DontHaveAccount';
+import { RootHomeStackScreenProps } from '../types';
 
-export default function TabTwoScreen() {
+export default function TabTwoScreen({navigation, route}: RootHomeStackScreenProps<"Login">) {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Login</Text>
       <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
       {/* <EditScreenInfo path="/screens/TabTwoScreen.tsx" /> */}
       <Login />
-      <DontHaveAccount />
+      <DontHaveAccount navigation={navigation} route={route}/>
     </View>
   );
 }

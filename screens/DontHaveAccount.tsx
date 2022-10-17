@@ -1,18 +1,20 @@
 import { View, Text, TouchableWithoutFeedback } from "react-native"
+import { RootHomeStackScreenProps } from "../types";
 
 
-const DontHaveAccount = () => {
+const DontHaveAccount = ({navigation}: RootHomeStackScreenProps<"Login">) => {
 
     return (
         <View>
-            <Text> Don't have an 
-                <TouchableWithoutFeedback
-                    onPress={()=>{}}
-                    onPressIn={()=>{}}
-                    onPressOut={()=>{}}
+            <Text> Don't have an{" "}
+                <Text
+                    onPress={()=>{navigation.navigate('Register')}}
+                    //onPressIn={()=>{}}
+                    //onPressOut={()=>{}}
+                    style={{fontWeight: 'bold' }}
                 >
-                    <Text style={{fontWeight: 'bold' }} >{" account"} </Text>
-                </TouchableWithoutFeedback>?
+                    account
+                </Text>?
             </Text>
         </View>
     )
