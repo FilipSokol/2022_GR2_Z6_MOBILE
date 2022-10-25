@@ -4,28 +4,29 @@
  */
 
 import { BottomTabScreenProps } from '@react-navigation/bottom-tabs';
-import { CompositeScreenProps, NavigatorScreenParams } from '@react-navigation/native';
+import {
+  CompositeScreenProps,
+  NavigatorScreenParams,
+} from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { GradeProps } from './screens/Subjects';
 
 declare global {
   namespace ReactNavigation {
-    interface RootParamList extends RootStackParamList {}
+    type RootParamList = RootStackParamList;
   }
 }
 
 export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
-  Modal: undefined,
-  NotFound: undefined,
-  Grades: {"grade": GradeProps[]},
-  Subjects: undefined
+  Modal: undefined;
+  NotFound: undefined;
+  Grades: { grade: GradeProps[] };
+  Subjects: undefined;
 };
 
-export type RootStackScreenProps<Screen extends keyof RootStackParamList> = NativeStackScreenProps<
-  RootStackParamList,
-  Screen
->;
+export type RootStackScreenProps<Screen extends keyof RootStackParamList> =
+  NativeStackScreenProps<RootStackParamList, Screen>;
 
 export type RootTabParamList = {
   TabOne: undefined;
@@ -33,22 +34,22 @@ export type RootTabParamList = {
 };
 
 export type RootHomeStackParamList = {
-  Root: NavigatorScreenParams<RootHomeParamList> | undefined,
-  Login: undefined,
-  Register: undefined
-}
+  Root: NavigatorScreenParams<RootHomeParamList> | undefined;
+  Login: undefined;
+  Register: undefined;
+};
 
 export type RootHomeParamList = {
-  LoginScreen: undefined,
-  RegisterScreen: undefined
-}
+  LoginScreen: undefined;
+  RegisterScreen: undefined;
+};
 
-export type RootHomeStackScreenProps<Screen extends keyof RootHomeStackParamList> = NativeStackScreenProps<
-  RootHomeStackParamList,
-  Screen
->;
+export type RootHomeStackScreenProps<
+  Screen extends keyof RootHomeStackParamList,
+> = NativeStackScreenProps<RootHomeStackParamList, Screen>;
 
-export type RootTabScreenProps<Screen extends keyof RootTabParamList> = CompositeScreenProps<
-  BottomTabScreenProps<RootTabParamList, Screen>,
-  NativeStackScreenProps<RootStackParamList>
->;
+export type RootTabScreenProps<Screen extends keyof RootTabParamList> =
+  CompositeScreenProps<
+    BottomTabScreenProps<RootTabParamList, Screen>,
+    NativeStackScreenProps<RootStackParamList>
+  >;

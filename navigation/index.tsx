@@ -5,7 +5,11 @@
  */
 import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer, DefaultTheme, DarkTheme } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  DefaultTheme,
+  DarkTheme,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { useState } from 'react';
@@ -19,14 +23,26 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import Register from '../screens/Register';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
-import { RootHomeParamList, RootHomeStackParamList, RootStackParamList, RootStackScreenProps, RootTabParamList, RootTabScreenProps } from '../types';
+import {
+  RootHomeParamList,
+  RootHomeStackParamList,
+  RootStackParamList,
+  RootStackScreenProps,
+  RootTabParamList,
+  RootTabScreenProps,
+} from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
 
-export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeName }) {
+export default function Navigation({
+  colorScheme,
+}: {
+  colorScheme: ColorSchemeName;
+}) {
   return (
     <NavigationContainer
       linking={LinkingConfiguration}
-      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+    >
       <RootNavigator />
     </NavigationContainer>
   );
@@ -39,24 +55,44 @@ export default function Navigation({ colorScheme }: { colorScheme: ColorSchemeNa
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  let logged = true;
+  const logged = true;
 
   return (
     <Stack.Navigator>
       {logged ? (
         <>
-        <Stack.Screen name="Root" component={BottomTabNavigator} options={{ headerShown: false }} />
+          <Stack.Screen
+            name="Root"
+            component={BottomTabNavigator}
+            options={{ headerShown: false }}
+          />
         </>
       ) : (
         <>
-        <Stack.Screen name="Root" component={BottomHomeTabNavigator} options={{ headerShown: false }} />
-        {/* <Stack.Screen name="Register" component={BottomHomeTabNavigator} options={{ headerShown: false }} />   */}
+          <Stack.Screen
+            name="Root"
+            component={BottomHomeTabNavigator}
+            options={{ headerShown: false }}
+          />
+          {/* <Stack.Screen name="Register" component={BottomHomeTabNavigator} options={{ headerShown: false }} />   */}
         </>
       )}
-      <Stack.Screen name="NotFound" component={NotFoundScreen} options={{ title: 'Oops!' }} />
+      <Stack.Screen
+        name="NotFound"
+        component={NotFoundScreen}
+        options={{ title: 'Oops!' }}
+      />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
-        <Stack.Screen name="Modal" component={ModalScreen} options={{title: "Subjects", headerTitleAlign: 'center'}} />
-        <Stack.Screen name="Grades" component={Grades} options={{title: "Grades", headerTitleAlign: 'center'}} />
+        <Stack.Screen
+          name="Modal"
+          component={ModalScreen}
+          options={{ title: 'Subjects', headerTitleAlign: 'center' }}
+        />
+        <Stack.Screen
+          name="Grades"
+          component={Grades}
+          options={{ title: 'Grades', headerTitleAlign: 'center' }}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -76,36 +112,38 @@ function BottomTabNavigator() {
       initialRouteName="TabTwo"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme].tint,
-      }}>
-      { 
-      <BottomTab.Screen
-        name="TabOne"
-        component={TabOneScreen}
-        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-          //headerTitleAlign: 'center',
-          title: 'Schedule',
-          headerTitleAlign: 'center',
-          tabBarActiveBackgroundColor: '#313131',
-          headerStyle: {
-            backgroundColor: 'stealblue',
-          },
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}>
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
-        })}
-      />
+      }}
+    >
+      {
+        <BottomTab.Screen
+          name="TabOne"
+          component={TabOneScreen}
+          options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
+            //headerTitleAlign: 'center',
+            title: 'Schedule',
+            headerTitleAlign: 'center',
+            tabBarActiveBackgroundColor: '#313131',
+            headerStyle: {
+              backgroundColor: 'stealblue',
+            },
+            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+            headerRight: () => (
+              <Pressable
+                onPress={() => navigation.navigate('Modal')}
+                style={({ pressed }) => ({
+                  opacity: pressed ? 0.5 : 1,
+                })}
+              >
+                <FontAwesome
+                  name="info-circle"
+                  size={25}
+                  color={Colors[colorScheme].text}
+                  style={{ marginRight: 15 }}
+                />
+              </Pressable>
+            ),
+          })}
+        />
       }
       <BottomTab.Screen
         name="TabTwo"
@@ -117,54 +155,53 @@ function BottomTabNavigator() {
             backgroundColor: 'stealblue',
           },
           tabBarActiveBackgroundColor: '#313131',
-          tabBarIcon: ({ color }) => <TabBarIcon name="university" color={color} 
-          
-          />,
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="university" color={color} />
+          ),
         }}
       />
     </BottomTab.Navigator>
   );
 }
 
-const HomeTab =  createBottomTabNavigator<RootHomeStackParamList>();
+const HomeTab = createBottomTabNavigator<RootHomeStackParamList>();
 
-function BottomHomeTabNavigator(){
-
-  return(
-  <HomeTab.Navigator
-    initialRouteName='Login'
-  >
-    <HomeTab.Screen 
-      name={"Login"}
-      component={TabTwoScreen}
-      options={{
-        title: 'Login',
-        headerTitleAlign: 'center',
-        headerStyle: {
-          backgroundColor: 'stealblue',
-        },
-        tabBarActiveBackgroundColor: '#313131',
-        tabBarIcon: ({ color }) => <TabBarIcon name="university" color={color} />
+function BottomHomeTabNavigator() {
+  return (
+    <HomeTab.Navigator initialRouteName="Login">
+      <HomeTab.Screen
+        name={'Login'}
+        component={TabTwoScreen}
+        options={{
+          title: 'Login',
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: 'stealblue',
+          },
+          tabBarActiveBackgroundColor: '#313131',
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="university" color={color} />
+          ),
         }}
       />
 
-
-    <HomeTab.Screen 
-      name={"Register"}
-      component={Register}
-      options={{
-        title: 'Register',
-        headerTitleAlign: 'center',
-        headerStyle: {
-          backgroundColor: 'stealblue',
-        },
-        tabBarActiveBackgroundColor: '#313131',
-        tabBarIcon: ({ color }) => <TabBarIcon name="university" color={color} />
+      <HomeTab.Screen
+        name={'Register'}
+        component={Register}
+        options={{
+          title: 'Register',
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: 'stealblue',
+          },
+          tabBarActiveBackgroundColor: '#313131',
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="university" color={color} />
+          ),
         }}
       />
-
-  </HomeTab.Navigator>
-  )
+    </HomeTab.Navigator>
+  );
 }
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
