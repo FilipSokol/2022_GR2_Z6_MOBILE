@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button, StyleSheet, TextInput, View, Text } from 'react-native';
+import { AuthContext } from '../context/authModel';
+import { RootHomeStackScreenProps, RootTabScreenProps } from '../types';
 
-const Login = () => {
+const Login = ({ navigation }: RootTabScreenProps<any>) => {
+  const { login }: any = useContext(AuthContext); //any?
   return (
     <View style={styles.container}>
       <TextInput placeholder="Login" style={styles.textInput} />
@@ -15,7 +18,8 @@ const Login = () => {
         <Button
           title={'Login'}
           onPress={() => {
-            null;
+            login();
+            //navigation.navigate('Root');
           }}
         />
       </View>

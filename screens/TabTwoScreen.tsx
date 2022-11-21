@@ -19,7 +19,7 @@ export default function TabTwoScreen({
         darkColor="rgba(255,255,255,0.1)"
       />
       {/* <EditScreenInfo path="/screens/TabTwoScreen.tsx" /> */}
-      <Login />
+      <Login navigation={navigation} />
       <DontHaveAccount navigation={navigation} route={route} />
     </View>
   );

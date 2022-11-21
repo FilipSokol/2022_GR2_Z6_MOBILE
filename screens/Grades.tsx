@@ -54,7 +54,7 @@ const Grades = ({ route }: RootStackScreenProps<'Grades'>) => {
             Average grade: {avg}
           </Text>
         ) : null}
-        <Separator />
+        {/* <Separator /> */}
         {grades.grade.map((value: GradeProps, key) => {
           //console.log(key + 1);
           number = key + 1;
@@ -89,15 +89,26 @@ const styles = StyleSheet.create({
     margin: 20,
     backgroundColor: COLORS.lightgrey,
     borderWidth: 3,
-    borderColor: COLORS.green,
+    borderColor: COLORS.grey,
     borderRadius: 10,
+    elevation: 6,
     shadowOpacity: 0.8,
     shadowRadius: 15,
+    shadowColor: 'black',
     width: width * 0.8,
     height: height * 0.1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
+    // backgroundColor: '#f4f4f4',
+    // justifyContent: 'center',
+    // margin: 10,
+    // borderWidth: 3,
+    // borderRadius: 10,
+    // borderColor: 'whitesmoke',
+    // shadowOpacity: 0.8,
+    // elevation: 6,
+    // shadowRadius: 15,
   },
   grade: {
     //margin: 1,

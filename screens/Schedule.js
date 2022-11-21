@@ -1,8 +1,25 @@
-import React from 'react';
-import { View, Text, Dimensions, SafeAreaView, Platform } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Dimensions, SafeAreaView } from 'react-native';
 import EventCalendar from 'react-native-events-calendar';
+import axios from 'axios';
+
+import Constants from 'expo-constants';
+
+const { manifest } = Constants;
+
+const baseUrl = 'https://10.0.2.2:7006';
 
 let { width } = Dimensions.get('window');
+const idk = async () => {
+  const response = await axios
+    .get('http://10.0.2.2:5000/api/subjects')
+    .then((data) => {
+      console.log(data.data);
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
 
 let event = [
   {
@@ -35,16 +52,80 @@ let event = [
   },
 ];
 
-const Schedule = () => {
+const getData = () => {
+  let list = [];
+  // console.log(
+  //   `http://${manifest.debuggerHost.split(':').shift()}:5000/api/subjects`,
+  // );
+  axios
+    .get('http://10.0.2.2:5000/api/subjects')
+    //.get(`http://${manifest.debuggerHost.split(':').shift()}:5000/api/subjects`)
+    .then((result) => {
+      result.data.forEach((element) => {
+        // {
+        //   "name": "string",
+        //   "description": "string",
+        //   "startTime": "2022-11-01T08:52:34.897Z",
+        //   "endTime": "2022-11-01T10:52:34.897Z",
+        //   "weekDaysId": 1,
+        //   "ects": 1,
+        //   "teacherId": 3
+        // }
+        let obj = {
+          color: 'powderblue',
+          start: element.startTime,
+          end: element.endTime,
+          title: element.name,
+          summary: element.description,
+        };
+        list.push(obj);
+        //setEvents([...events, obj]);
+        //setEvents((events) => [...events, obj]);
+        //console.log(events);
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+
+  return list;
+};
+
+export const Schedule = (preload = []) => {
+  const [events, setEvents] = useState([]);
+  useEffect(() => {
+    // preload = [
+    //   {
+    //     name: 'string',
+    //     description: 'string',
+    //     startTime: '2022-11-01T08:52:34.897Z',
+    //     endTime: '2022-11-01T10:52:34.897Z',
+    //     weekDaysId: 1,
+    //     ects: 1,
+    //     teacherId: 3,
+    //   },
+    // ];
+    //preload = [];
+    if (
+      !preload.length === 'undefined' ||
+      preload.length === 0 ||
+      (Object.keys(preload).length === 0 && preload.constructor === Object)
+    ) {
+      //console.log('here?', preload.length);
+      setEvents(getData());
+    }
+
+    //const resultt = getData();
+  }, []);
   return (
     <SafeAreaView>
       <View>
         <EventCalendar
           eventTapped={() => {
-            null;
+            idk();
           }}
           // Function on event press
-          events={event}
+          events={events}
           scrollToFirst={'True'}
           format24h={'True'}
           // passing the Array of event
@@ -56,10 +137,13 @@ const Schedule = () => {
           // Number of date will render before and after initDate
           // (default is 30 will render 30 day before initDate
           // and 29 day after initDate)
-          initDate={'2022-10-10'}
+          initDate={'2022-10-31'}
           // Show initial date (default is today)
           //scrollToFirst
           // Scroll to first event of the day (default true)
+          ///onDateChange={() => {
+          //  console.log('onDateChange');
+          //}}
         />
       </View>
     </SafeAreaView>

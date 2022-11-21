@@ -13,11 +13,18 @@ import {
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
 import { useState } from 'react';
-import { ColorSchemeName, Pressable } from 'react-native';
+import {
+  ActivityIndicator,
+  ColorSchemeName,
+  Pressable,
+  View,
+} from 'react-native';
 
 import Colors from '../constants/Colors';
+import { AuthContext } from '../context/authModel';
 import useColorScheme from '../hooks/useColorScheme';
 import Grades from '../screens/Grades';
+import HomeScreen from '../screens/HomeScreen';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
 import Register from '../screens/Register';
@@ -47,7 +54,7 @@ export default function Navigation({
     </NavigationContainer>
   );
 }
-
+export const LOGGED = false;
 /**
  * A root stack navigator is often used for displaying modals on top of all other content.
  * https://reactnavigation.org/docs/modal
@@ -55,11 +62,16 @@ export default function Navigation({
 const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
-  const logged = true;
-
+  //const logged = true;
+  const { isLoading, userToken } = React.useContext(AuthContext);
+  if (isLoading) {
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <ActivityIndicator size={'large'} />
+    </View>;
+  }
   return (
     <Stack.Navigator>
-      {logged ? (
+      {userToken !== null ? (
         <>
           <Stack.Screen
             name="Root"
@@ -114,51 +126,65 @@ function BottomTabNavigator() {
         tabBarActiveTintColor: Colors[colorScheme].tint,
       }}
     >
-      {
-        <BottomTab.Screen
-          name="TabOne"
-          component={TabOneScreen}
-          options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
-            //headerTitleAlign: 'center',
-            title: 'Schedule',
-            headerTitleAlign: 'center',
-            tabBarActiveBackgroundColor: '#313131',
-            headerStyle: {
-              backgroundColor: 'stealblue',
-            },
-            tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-            headerRight: () => (
-              <Pressable
-                onPress={() => navigation.navigate('Modal')}
-                style={({ pressed }) => ({
-                  opacity: pressed ? 0.5 : 1,
-                })}
-              >
-                <FontAwesome
-                  name="info-circle"
-                  size={25}
-                  color={Colors[colorScheme].text}
-                  style={{ marginRight: 15 }}
-                />
-              </Pressable>
-            ),
-          })}
-        />
-      }
+      <BottomTab.Screen
+        name="TabOne"
+        component={TabOneScreen}
+        options={({ navigation }: RootTabScreenProps<'TabOne'>) => ({
+          //headerTitleAlign: 'center',
+          title: 'Schedule',
+          headerTitleAlign: 'center',
+          tabBarActiveBackgroundColor: '#313131',
+          headerStyle: {
+            backgroundColor: 'stealblue',
+          },
+          tabBarIcon: ({ color }) => (
+            <TabBarIcon name="calendar" color={color} />
+          ),
+          headerRight: () => (
+            <Pressable
+              onPress={() => navigation.navigate('Modal')}
+              style={({ pressed }) => ({
+                opacity: pressed ? 0.5 : 1,
+              })}
+            >
+              <FontAwesome
+                name="info-circle"
+                size={25}
+                color={Colors[colorScheme].text}
+                style={{ marginRight: 15 }}
+              />
+            </Pressable>
+          ),
+        })}
+      />
+
       <BottomTab.Screen
         name="TabTwo"
-        component={TabTwoScreen}
+        component={HomeScreen}
         options={{
-          title: 'Login',
+          title: 'Home',
+          headerTitleAlign: 'center',
+          headerStyle: {
+            backgroundColor: 'stealblue',
+          },
+          tabBarActiveBackgroundColor: '#313131',
+          tabBarIcon: ({ color }) => <TabBarIcon name="empire" color={color} />,
+        }}
+      />
+      <BottomTab.Screen
+        name="TabThree"
+        component={ModalScreen}
+        options={({ navigation }: any) => ({
+          title: 'Grades',
           headerTitleAlign: 'center',
           headerStyle: {
             backgroundColor: 'stealblue',
           },
           tabBarActiveBackgroundColor: '#313131',
           tabBarIcon: ({ color }) => (
-            <TabBarIcon name="university" color={color} />
+            <TabBarIcon name="graduation-cap" color={color} />
           ),
-        }}
+        })}
       />
     </BottomTab.Navigator>
   );

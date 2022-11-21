@@ -97,41 +97,41 @@ const Subjects = ({ navigation }: RootStackScreenProps<'Modal'>) => {
   //const navigation = useNavigation();
   const [data, setData] = useState([
     {
-      subjectName: 'AWWW',
-      teacher: '<teacher_name1>',
+      subjectName: 'Subject1',
+      teacher: '<teacher_name>',
       ECTS: 5,
       grades: [
         {
           grade: 3.5,
           date: '2022-10-10 13:45:22',
-          description: 'SOLID principles',
+          description: 'Homework1',
         },
         {
           grade: 5,
           date: '2022-10-22 09:22:13',
-          description: 'Design Patterns',
+          description: 'Homework2',
         },
         {
           grade: 2,
           date: '2022-11-07 15:10:12',
-          description: 'Homework',
+          description: 'Homework3',
         },
       ],
     },
     {
-      subjectName: 'AWWW',
+      subjectName: 'Subject2',
       teacher: '<teacher_name>',
       ECTS: 3,
       grades: [
         {
           grade: 3,
           date: '2022-10-10 13:45:22',
-          description: 'SOLID principles1',
+          description: 'Homework2',
         },
         {
           grade: 2,
           date: '2022-10-22 09:22:13',
-          description: 'Design Patterns2',
+          description: 'Homework2',
         },
         {
           grade: 4,
@@ -176,25 +176,25 @@ const Subjects = ({ navigation }: RootStackScreenProps<'Modal'>) => {
       ],
     },
     {
-      subjectName: 'AWWW',
+      subjectName: 'Subject3',
       teacher: '<teacher_name>',
       ECTS: 4,
       grades: [],
     },
     {
-      subjectName: 'AWWW4',
+      subjectName: 'Subject4',
       teacher: '<teacher_name>',
       ECTS: 4,
       grades: [
         {
           grade: 3,
           date: '2022-10-10 13:45:22',
-          description: 'SOLID principles1',
+          description: 'Homework1',
         },
         {
           grade: 5,
           date: '2022-10-22 09:22:13',
-          description: 'Design Patterns2',
+          description: 'Homework2',
         },
       ],
     },
