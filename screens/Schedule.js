@@ -52,6 +52,23 @@ let event = [
   },
 ];
 
+const checkType = (type) => {
+  // if (type === 'Unknown') return null;
+  // if (type === 'Laboratory') return 'powderblue';
+  switch (type) {
+    case 'Unknown':
+      return null;
+    case 'Laboratory':
+      return 'powderblue';
+    case 'Lecture':
+      return '#fcfedf';
+    case 'Event':
+      return null;
+    default:
+      return null;
+  }
+};
+
 const getData = () => {
   let list = [];
   // console.log(
@@ -72,11 +89,11 @@ const getData = () => {
         //   "teacherId": 3
         // }
         let obj = {
-          color: 'powderblue',
+          color: checkType(element.type),
           start: element.startTime,
           end: element.endTime,
           title: element.name,
-          summary: element.description,
+          summary: `${element.description}, ${element.type}`,
         };
         list.push(obj);
         //setEvents([...events, obj]);
