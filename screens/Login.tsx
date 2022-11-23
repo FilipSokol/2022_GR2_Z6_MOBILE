@@ -1,25 +1,31 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Button, StyleSheet, TextInput, View, Text } from 'react-native';
 import { AuthContext } from '../context/authModel';
 import { RootHomeStackScreenProps, RootTabScreenProps } from '../types';
 
 const Login = ({ navigation }: RootTabScreenProps<any>) => {
+  const [email, setEmail] = useState<string | null>(null);
+  const [password, setPassword] = useState<string | null>(null);
   const { login }: any = useContext(AuthContext); //any?
   return (
     <View style={styles.container}>
-      <TextInput placeholder="Login" style={styles.textInput} />
+      <TextInput
+        placeholder="Email"
+        style={styles.textInput}
+        onChangeText={(value) => setEmail(value)}
+      />
       <TextInput
         placeholder="Password"
         style={styles.textInput}
         autoCorrect={false}
         secureTextEntry
+        onChangeText={(value) => setPassword(value)}
       />
       <View style={{ width: 200, marginTop: 10 }}>
         <Button
           title={'Login'}
           onPress={() => {
-            login();
-            //navigation.navigate('Root');
+            login(email, password);
           }}
         />
       </View>

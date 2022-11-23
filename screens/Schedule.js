@@ -3,11 +3,7 @@ import { View, Dimensions, SafeAreaView } from 'react-native';
 import EventCalendar from 'react-native-events-calendar';
 import axios from 'axios';
 
-import Constants from 'expo-constants';
-
-const { manifest } = Constants;
-
-const baseUrl = 'https://10.0.2.2:7006';
+import { BASE_URL } from '../context/config';
 
 let { width } = Dimensions.get('window');
 const idk = async () => {
@@ -75,7 +71,7 @@ const getData = () => {
   //   `http://${manifest.debuggerHost.split(':').shift()}:5000/api/subjects`,
   // );
   axios
-    .get('http://10.0.2.2:5000/api/subjects')
+    .get(`${BASE_URL}/api/subjects`)
     //.get(`http://${manifest.debuggerHost.split(':').shift()}:5000/api/subjects`)
     .then((result) => {
       result.data.forEach((element) => {

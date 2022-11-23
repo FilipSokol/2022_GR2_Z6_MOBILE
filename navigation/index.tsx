@@ -63,7 +63,7 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function RootNavigator() {
   //const logged = true;
-  const { isLoading, userToken } = React.useContext(AuthContext);
+  const { isLoading, userToken }: string | any = React.useContext(AuthContext);
   if (isLoading) {
     <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
       <ActivityIndicator size={'large'} />
