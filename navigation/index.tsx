@@ -5,25 +5,28 @@
  */
 import { FontAwesome } from '@expo/vector-icons';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 import {
   NavigationContainer,
   DefaultTheme,
   DarkTheme,
+  DrawerActions,
 } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import * as React from 'react';
-import { useState } from 'react';
 import {
   ActivityIndicator,
   ColorSchemeName,
   Pressable,
   View,
 } from 'react-native';
+import DrawerButton from '../components/DrawerButton';
 
 import Colors from '../constants/Colors';
 import { AuthContext } from '../context/authModel';
 import useColorScheme from '../hooks/useColorScheme';
 import Grades from '../screens/Grades';
+import HomeDrawer from '../screens/HomeDrawer';
 import HomeScreen from '../screens/HomeScreen';
 import ModalScreen from '../screens/ModalScreen';
 import NotFoundScreen from '../screens/NotFoundScreen';
@@ -31,14 +34,18 @@ import Register from '../screens/Register';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
 import {
-  RootHomeParamList,
   RootHomeStackParamList,
   RootStackParamList,
-  RootStackScreenProps,
   RootTabParamList,
   RootTabScreenProps,
 } from '../types';
 import LinkingConfiguration from './LinkingConfiguration';
+
+export const navigationRef = React.createRef();
+
+export function toggleDrawer() {
+  navigationRef.current.dispatch(DrawerActions.toggleDrawer());
+}
 
 export default function Navigation({
   colorScheme,
@@ -49,6 +56,7 @@ export default function Navigation({
     <NavigationContainer
       linking={LinkingConfiguration}
       theme={colorScheme === 'dark' ? DarkTheme : DefaultTheme}
+      ref={navigationRef}
     >
       <RootNavigator />
     </NavigationContainer>
@@ -60,7 +68,7 @@ export const LOGGED = false;
  * https://reactnavigation.org/docs/modal
  */
 const Stack = createNativeStackNavigator<RootStackParamList>();
-
+const Drawer = createDrawerNavigator();
 function RootNavigator() {
   //const logged = true;
   const { isLoading, userToken }: string | any = React.useContext(AuthContext);
@@ -76,7 +84,9 @@ function RootNavigator() {
           <Stack.Screen
             name="Root"
             component={BottomTabNavigator}
-            options={{ headerShown: false }}
+            options={({ navigation }) => ({
+              headerShown: false,
+            })}
           />
         </>
       ) : (
@@ -89,11 +99,19 @@ function RootNavigator() {
           {/* <Stack.Screen name="Register" component={BottomHomeTabNavigator} options={{ headerShown: false }} />   */}
         </>
       )}
+      {/* <Stack.Screen
+        name="Home Drawer"
+        component={CreateTopDrawer}
+        options={({ navigation }) => ({
+          headerShown: false,
+        })}
+      /> */}
       <Stack.Screen
         name="NotFound"
         component={NotFoundScreen}
         options={{ title: 'Oops!' }}
       />
+      <Drawer.Screen name="HomeDrawer" component={HomeDrawer} />
       <Stack.Group screenOptions={{ presentation: 'modal' }}>
         <Stack.Screen
           name="Modal"
@@ -157,20 +175,31 @@ function BottomTabNavigator() {
           ),
         })}
       />
-
       <BottomTab.Screen
         name="TabTwo"
         component={HomeScreen}
-        options={{
+        options={({ navigation }: any) => ({
           title: 'Home',
+          headerTitleStyle: {
+            fontFamily: 'Roboto',
+            //fontStyle: 'italic',
+          },
           headerTitleAlign: 'center',
+          headerRight: () => <DrawerButton navigation={navigation} />,
           headerStyle: {
-            backgroundColor: 'stealblue',
+            backgroundColor: '#FDFDFD',
           },
           tabBarActiveBackgroundColor: '#313131',
           tabBarIcon: ({ color }) => <TabBarIcon name="empire" color={color} />,
-        }}
+        })}
       />
+      {/* <BottomTab.Screen
+        name="HomeDrawer"
+        component={CreateTopDrawer}
+        headerLeft={null}
+        gestureEnabled={false}
+        options={{ headerShown: false }}
+      /> */}
       <BottomTab.Screen
         name="TabThree"
         component={ModalScreen}
@@ -221,7 +250,7 @@ function BottomHomeTabNavigator() {
             backgroundColor: 'stealblue',
           },
           tabBarActiveBackgroundColor: '#313131',
-          tabBarIcon: ({ color }) => (
+          tabBarIcon: ({ color }: any) => (
             <TabBarIcon name="university" color={color} />
           ),
         }}
@@ -229,6 +258,17 @@ function BottomHomeTabNavigator() {
     </HomeTab.Navigator>
   );
 }
+
+function CreateTopDrawer() {
+  return (
+    //<NavigationContainer>
+    <Drawer.Navigator initialRouteName="homeDrawer">
+      <Drawer.Screen name="homeDrawer" component={HomeDrawer} />
+    </Drawer.Navigator>
+    //</NavigationContainer>
+  );
+}
+
 /**
  * You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
  */

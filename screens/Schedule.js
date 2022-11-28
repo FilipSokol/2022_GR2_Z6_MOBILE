@@ -65,25 +65,22 @@ const checkType = (type) => {
   }
 };
 
+// {
+//   "name": "string",
+//   "description": "string",
+//   "startTime": "2022-11-01T08:52:34.897Z",
+//   "endTime": "2022-11-01T10:52:34.897Z",
+//   "weekDaysId": 1,
+//   "ects": 1,
+//   "teacherId": 3
+// }
+
 const getData = () => {
   let list = [];
-  // console.log(
-  //   `http://${manifest.debuggerHost.split(':').shift()}:5000/api/subjects`,
-  // );
   axios
     .get(`${BASE_URL}/api/subjects`)
-    //.get(`http://${manifest.debuggerHost.split(':').shift()}:5000/api/subjects`)
     .then((result) => {
       result.data.forEach((element) => {
-        // {
-        //   "name": "string",
-        //   "description": "string",
-        //   "startTime": "2022-11-01T08:52:34.897Z",
-        //   "endTime": "2022-11-01T10:52:34.897Z",
-        //   "weekDaysId": 1,
-        //   "ects": 1,
-        //   "teacherId": 3
-        // }
         let obj = {
           color: checkType(element.type),
           start: element.startTime,
@@ -145,8 +142,8 @@ export const Schedule = (preload = []) => {
           width={width}
           // Container width
           size={30}
-          //upperCaseHeader
-          //uppercase
+          // upperCaseHeader
+          // uppercase
           // Number of date will render before and after initDate
           // (default is 30 will render 30 day before initDate
           // and 29 day after initDate)

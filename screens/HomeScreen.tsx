@@ -1,8 +1,16 @@
+import {
+  createDrawerNavigator,
+  DrawerContentScrollView,
+  DrawerItem,
+  DrawerItemList,
+} from '@react-navigation/drawer';
+import { DrawerActions } from '@react-navigation/native';
 import React, { useContext } from 'react';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
 import { AuthContext, responseProps } from '../context/authModel';
+import HomeDrawer from './HomeDrawer';
 
 export const getUserInfo = (userInfo: responseProps) => {
   //const userRole = userInfo[`http://schemas.microsoft.com/ws/2008/06/identity/claims/role`]
@@ -17,8 +25,13 @@ export const getUserInfo = (userInfo: responseProps) => {
 };
 
 //useEffect(() => {getUserInfo();}, []);
+const Drawer = createDrawerNavigator();
 
-const HomeScreen = () => {
+export const tgd = (navigation) => {
+  navigation.toggleDrawer();
+};
+
+const HomeScreen = ({ navigation }) => {
   const { logout, userInfo }: any = useContext(AuthContext);
 
   const [userRole, setUserRole] = useState('');
@@ -27,15 +40,30 @@ const HomeScreen = () => {
     userInfo ? setUserRole(getUserInfo(userInfo)) : null;
   }, [userInfo]);
   return (
-    <View style={styles.view}>
-      {/* <Button
-        title="Logout"
-        onPress={() => {
-          logout();
-        }}
-      /> */}
-      <Text>{userRole}</Text>
-    </View>
+    <Drawer.Navigator
+      initialRouteName="homeDrawer"
+      drawerContent={(props) => {
+        return (
+          <DrawerContentScrollView {...props}>
+            <DrawerItemList {...props} />
+            <DrawerItem label="toggle" onPress={() => tgd(props.navigation)} />
+            <DrawerItem label="Logout" onPress={() => logout()} />
+          </DrawerContentScrollView>
+        );
+      }}
+    >
+      <Drawer.Screen
+        name="homeDrawer"
+        component={HomeDrawer}
+        options={{ headerShown: false, drawerPosition: 'right' }}
+      />
+
+      <Drawer.Screen
+        name="home Drawer"
+        component={HomeDrawer}
+        options={{ headerShown: false, drawerPosition: 'right' }}
+      />
+    </Drawer.Navigator>
   );
 };
 
