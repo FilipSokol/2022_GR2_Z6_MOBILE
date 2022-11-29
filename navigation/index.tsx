@@ -181,7 +181,7 @@ function BottomTabNavigator() {
         options={({ navigation }: any) => ({
           title: 'Home',
           headerTitleStyle: {
-            fontFamily: 'Roboto',
+            //fontFamily: 'Roboto',
             //fontStyle: 'italic',
           },
           headerTitleAlign: 'center',

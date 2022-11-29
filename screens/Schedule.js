@@ -4,6 +4,7 @@ import EventCalendar from 'react-native-events-calendar';
 import axios from 'axios';
 
 import { BASE_URL } from '../context/config';
+import { AuthContext } from '../context/authModel';
 
 let { width } = Dimensions.get('window');
 const idk = async () => {
@@ -53,7 +54,7 @@ const checkType = (type) => {
   // if (type === 'Laboratory') return 'powderblue';
   switch (type) {
     case 'Unknown':
-      return null;
+      return 'whitesmoke';
     case 'Laboratory':
       return 'powderblue';
     case 'Lecture':
@@ -75,12 +76,13 @@ const checkType = (type) => {
 //   "teacherId": 3
 // }
 
-const getData = () => {
+const getData = (groupId) => {
   let list = [];
   axios
-    .get(`${BASE_URL}/api/subjects`)
+    .get(`${BASE_URL}/api/schedules/${groupId}`)
     .then((result) => {
       result.data.forEach((element) => {
+        console.log(element);
         let obj = {
           color: checkType(element.type),
           start: element.startTime,
@@ -88,7 +90,9 @@ const getData = () => {
           title: element.name,
           summary: `${element.description}, ${element.type}`,
         };
+        //console.log(obj);
         list.push(obj);
+        //list.push(test);
         //setEvents([...events, obj]);
         //setEvents((events) => [...events, obj]);
         //console.log(events);
@@ -97,11 +101,11 @@ const getData = () => {
     .catch((err) => {
       console.log(err);
     });
-
   return list;
 };
 
 export const Schedule = (preload = []) => {
+  const { userInfo }: any = React.useContext(AuthContext);
   const [events, setEvents] = useState([]);
   useEffect(() => {
     // preload = [
@@ -122,9 +126,9 @@ export const Schedule = (preload = []) => {
       (Object.keys(preload).length === 0 && preload.constructor === Object)
     ) {
       //console.log('here?', preload.length);
-      setEvents(getData());
+      setEvents(getData(userInfo['GroupId']));
     }
-
+    //console.log('events', { events });
     //const resultt = getData();
   }, []);
   return (
@@ -147,7 +151,7 @@ export const Schedule = (preload = []) => {
           // Number of date will render before and after initDate
           // (default is 30 will render 30 day before initDate
           // and 29 day after initDate)
-          initDate={'2022-10-31'}
+          initDate={'2022-11-26'}
           // Show initial date (default is today)
           //scrollToFirst
           // Scroll to first event of the day (default true)
