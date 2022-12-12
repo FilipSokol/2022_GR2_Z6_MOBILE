@@ -39,13 +39,8 @@ import {
   RootTabParamList,
   RootTabScreenProps,
 } from '../types';
+import { navigationRef } from './helper';
 import LinkingConfiguration from './LinkingConfiguration';
-
-export const navigationRef = React.createRef();
-
-export function toggleDrawer() {
-  navigationRef.current.dispatch(DrawerActions.toggleDrawer());
-}
 
 export default function Navigation({
   colorScheme,
@@ -158,21 +153,23 @@ function BottomTabNavigator() {
           tabBarIcon: ({ color }) => (
             <TabBarIcon name="calendar" color={color} />
           ),
-          headerRight: () => (
-            <Pressable
-              onPress={() => navigation.navigate('Modal')}
-              style={({ pressed }) => ({
-                opacity: pressed ? 0.5 : 1,
-              })}
-            >
-              <FontAwesome
-                name="info-circle"
-                size={25}
-                color={Colors[colorScheme].text}
-                style={{ marginRight: 15 }}
-              />
-            </Pressable>
-          ),
+          // headerRight: () => (
+          //   <Pressable
+          //     onPress={() => {
+          //       null;
+          //     }}
+          //     style={({ pressed }) => ({
+          //       opacity: pressed ? 0.5 : 1,
+          //     })}
+          //   >
+          //     <FontAwesome
+          //       name="info-circle"
+          //       size={25}
+          //       color={Colors[colorScheme].text}
+          //       style={{ marginRight: 15 }}
+          //     />
+          //   </Pressable>
+          // ),
         })}
       />
       <BottomTab.Screen

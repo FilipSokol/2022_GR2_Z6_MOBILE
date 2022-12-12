@@ -27,11 +27,11 @@ export const getUserInfo = (userInfo: responseProps) => {
 //useEffect(() => {getUserInfo();}, []);
 const Drawer = createDrawerNavigator();
 
-export const tgd = (navigation) => {
+export const tgd = (navigation: any) => {
   navigation.toggleDrawer();
 };
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation }: any) => {
   const { logout, userInfo }: any = useContext(AuthContext);
 
   const [userRole, setUserRole] = useState('');
@@ -46,7 +46,7 @@ const HomeScreen = ({ navigation }) => {
         return (
           <DrawerContentScrollView {...props}>
             <DrawerItemList {...props} />
-            <DrawerItem label="toggle" onPress={() => tgd(props.navigation)} />
+            <DrawerItem label="Close" onPress={() => tgd(props.navigation)} />
             <DrawerItem label="Logout" onPress={() => logout()} />
           </DrawerContentScrollView>
         );
@@ -58,11 +58,11 @@ const HomeScreen = ({ navigation }) => {
         options={{ headerShown: false, drawerPosition: 'right' }}
       />
 
-      <Drawer.Screen
+      {/* <Drawer.Screen
         name="home Drawer"
         component={HomeDrawer}
         options={{ headerShown: false, drawerPosition: 'right' }}
-      />
+      /> */}
     </Drawer.Navigator>
   );
 };

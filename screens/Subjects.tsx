@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from 'react';
+import axios from 'axios';
+import React, { useContext, useEffect, useState } from 'react';
 import {
   Alert,
   FlatList,
@@ -13,7 +14,12 @@ import {
   TextProps,
   View,
   ViewProps,
+  RefreshControl,
+  ActivityIndicator,
 } from 'react-native';
+import COLORS from '../constants/Colors_Screens';
+import { AuthContext } from '../context/authModel';
+import { BASE_URL } from '../context/config';
 import { RootStackScreenProps } from '../types';
 //import { useNavigation } from '@react-navigation/native';
 
@@ -62,39 +68,39 @@ type tip = {
   subjects: ISubjects[];
 };
 
-const Node = (props: tip) => {
-  // const renderItemm = ({ item }) => {
-
-  //     // <Pressable style={item.style}
-  //     //     //onPress={() => { Grades(props.grades) }}
-  //     //     android_ripple={{ color: "powderblue" }}>
-  //     //     <Text style={{ alignSelf: 'center' }}>{item.subjectName} - {item.teacher}</Text>
-  //     // </Pressable>
-  // }
-
-  // const renderItem = ({ item }) => (
-  //     <Pressable style={item.style}
-  //         // onPress={() => { Grades(props.grades) }}
-  //         android_ripple={{ color: "powderblue" }}>
-  //         <Text style={{ alignSelf: 'center' }}>{item.subjectName} - {item.teacher}</Text>
-  //     </Pressable>
-  // );
-
-  return (
-    // <SectionList
-    //      sections={dataa}
-    //      keyExtractor={(item, index)=> item + index}
-    //      renderItem={({item})=> <Text>{item}</Text>}
-    //      renderSectionHeader={({section: {item}})=>(
-    //         <Text>{item}</Text>
-    //      )}
-    // />
-    <Text>dd</Text>
-  );
+export type subjectProps = {
+  description: string;
+  ects: number;
+  startTime: string;
+  endTime: string;
+  name: string;
+  scheduleId: number;
+  type: string;
 };
 
 const Subjects = ({ navigation }: RootStackScreenProps<'Modal'>) => {
   //const navigation = useNavigation();
+  const [userSubject, setUserSubjects] = useState([]);
+  const { userInfo }: any = useContext(AuthContext);
+  const [refresh, setRefresh] = useState(true);
+  const getAllSubjects = () => {
+    axios
+      .get(`${BASE_URL}/api/subjects/${userInfo['StudentId']}/student`)
+      .then((response) => {
+        const topTierBackEnd = response.data.filter(
+          (ele: subjectProps, index: number) =>
+            index ===
+            response.data.findIndex(
+              (elem: subjectProps) => elem.name === ele.name,
+            ),
+        );
+        setRefresh(false);
+        setUserSubjects(topTierBackEnd);
+      });
+  };
+  useEffect(() => {
+    getAllSubjects();
+  }, []);
   const [data, setData] = useState([
     {
       subjectName: 'Subject1',
@@ -202,37 +208,33 @@ const Subjects = ({ navigation }: RootStackScreenProps<'Modal'>) => {
 
   return (
     <View style={{ flex: 1 }}>
-      <Text style={styles.Subject}>Subjects</Text>
-      {/* {data.map((value: ISubjects, key: any) => (
-                <Node key={key.toString()}
-                    props={value}
-                    style={styles.Node}
-                >
-                {/* <SectionList sections={value.grades} renderItem={({ item }) => <Grades props={item} />} /> 
-                
-                ))}
-            */}
-      {/* <Node
-                subjects={subject}
-                style={styles.Node}
-            /> */}
-      <ScrollView>
-        {data.map((value: ISubjects, key) => (
+      {refresh ? <ActivityIndicator /> : null}
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refresh} onRefresh={getAllSubjects} />
+        }
+      >
+        {userSubject.map((value: subjectProps, key) => (
           <Pressable
             key={key.toString()}
-            style={styles.Node}
+            style={[styles.Node]}
             onPress={() => {
-              navigation.navigate('Grades', { grade: value.grades });
+              navigation.navigate('Grades', { grade: value.name });
             }}
             //onPress={() => { Grades(props.grades) }}
             android_ripple={{ color: 'powderblue' }}
           >
-            <Text style={{ alignSelf: 'center' }}>
-              {value.subjectName} - {value.teacher}
+            <Text
+              style={{
+                alignSelf: 'center',
+                textAlign: 'center',
+                fontWeight: '500',
+                fontSize: 16,
+              }}
+            >
+              {value.name}
+              {/* - {value.description} */}
             </Text>
-            {/* {value.grades.map((valuee: Igrade, keyy) => (
-                            <Text key={keyy.toString()} style={{ alignSelf: 'center' }}>{valuee.date} - {valuee.grade} - {valuee.description}</Text>
-                        ))} */}
           </Pressable>
         ))}
       </ScrollView>
@@ -250,14 +252,18 @@ const styles = StyleSheet.create({
   Node: {
     width: width * 0.8,
     height: height * 0.1,
-    backgroundColor: '#f4f4f4',
+    backgroundColor: '#FDFDFD',
     justifyContent: 'center',
     margin: 10,
-    borderWidth: 3,
-    borderRadius: 10,
-    borderColor: 'whitesmoke',
+    borderWidth: 2,
+    borderRadius: 3,
+    //borderBottomRightRadius: 4,
+    borderColor: '#4D0036',
     shadowOpacity: 0.8,
     elevation: 6,
+    borderBottomWidth: 7,
+    borderRightWidth: 4,
+    shadowColor: '#000022',
     shadowRadius: 15,
   },
 });

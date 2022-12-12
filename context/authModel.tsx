@@ -19,10 +19,14 @@ export const AuthProvider = ({ children }: any) => {
   const login = async (email: string, password: string) => {
     setIsLoading(true);
     axios
-      .post(`${BASE_URL}/api/account/login`, {
-        email,
-        password,
-      })
+      .post(
+        `${BASE_URL}/api/account/login`,
+        {
+          email,
+          password,
+        },
+        { timeout: 5000 },
+      )
       .then((response) => {
         setUserToken(response.data['token']);
         //console.log(response.data['token']);

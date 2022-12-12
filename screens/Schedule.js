@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { View, Dimensions, SafeAreaView } from 'react-native';
 import EventCalendar from 'react-native-events-calendar';
 import axios from 'axios';
+import { useIsFocused } from '@react-navigation/native';
 
 import { BASE_URL } from '../context/config';
 import { AuthContext } from '../context/authModel';
@@ -66,15 +67,6 @@ const checkType = (type) => {
   }
 };
 
-// {
-//   "name": "string",
-//   "description": "string",
-//   "startTime": "2022-11-01T08:52:34.897Z",
-//   "endTime": "2022-11-01T10:52:34.897Z",
-//   "weekDaysId": 1,
-//   "ects": 1,
-//   "teacherId": 3
-// }
 
 const getData = (groupId) => {
   let list = [];
@@ -105,32 +97,16 @@ const getData = (groupId) => {
 };
 
 export const Schedule = (preload = []) => {
-  const { userInfo }: any = React.useContext(AuthContext);
+  const { userInfo } = React.useContext(AuthContext);
   const [events, setEvents] = useState([]);
+  const isFocused = useIsFocused();
   useEffect(() => {
-    // preload = [
-    //   {
-    //     name: 'string',
-    //     description: 'string',
-    //     startTime: '2022-11-01T08:52:34.897Z',
-    //     endTime: '2022-11-01T10:52:34.897Z',
-    //     weekDaysId: 1,
-    //     ects: 1,
-    //     teacherId: 3,
-    //   },
-    // ];
-    //preload = [];
-    if (
-      !preload.length === 'undefined' ||
-      preload.length === 0 ||
-      (Object.keys(preload).length === 0 && preload.constructor === Object)
-    ) {
-      //console.log('here?', preload.length);
+    if (isFocused) {
       setEvents(getData(userInfo['GroupId']));
     }
     //console.log('events', { events });
     //const resultt = getData();
-  }, []);
+  }, [isFocused]);
   return (
     <SafeAreaView>
       <View>

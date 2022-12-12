@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Button, StyleSheet, TextInput, View, Text } from 'react-native';
 import { AuthContext } from '../context/authModel';
+import { LOCAL_MOBILE_URL } from '../context/config';
 import { RootHomeStackScreenProps, RootTabScreenProps } from '../types';
 
 const Login = ({ navigation }: RootTabScreenProps<any>) => {
@@ -25,6 +26,7 @@ const Login = ({ navigation }: RootTabScreenProps<any>) => {
         <Button
           title={'Login'}
           onPress={() => {
+            console.log(LOCAL_MOBILE_URL);
             login(email, password);
           }}
         />

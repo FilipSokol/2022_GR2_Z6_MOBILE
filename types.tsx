@@ -9,7 +9,7 @@ import {
   NavigatorScreenParams,
 } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { GradeProps } from './screens/Subjects';
+import { GradeProps, subjectProps } from './screens/Subjects';
 
 declare global {
   namespace ReactNavigation {
@@ -21,7 +21,7 @@ export type RootStackParamList = {
   Root: NavigatorScreenParams<RootTabParamList> | undefined;
   Modal: undefined;
   NotFound: undefined;
-  Grades: { grade: GradeProps[] };
+  Grades: { grade: subjectProps };
   Subjects: undefined;
 };
 

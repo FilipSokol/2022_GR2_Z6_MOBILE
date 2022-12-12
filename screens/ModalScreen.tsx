@@ -9,7 +9,7 @@ import Grades from './Grades';
 export default function ModalScreen({ navigation, route }: any) {
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Student_name</Text>
+      {/* <Text style={styles.title}>Student_name</Text> */}
       <View
         style={styles.separator}
         lightColor="#eee"
