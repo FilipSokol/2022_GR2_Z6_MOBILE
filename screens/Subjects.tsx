@@ -78,14 +78,18 @@ export type subjectProps = {
   type: string;
 };
 
-const Subjects = ({ navigation }: RootStackScreenProps<'Modal'>) => {
+const Subjects = ({ navigation, route }: RootStackScreenProps<'Modal'>) => {
   //const navigation = useNavigation();
   const [userSubject, setUserSubjects] = useState([]);
   const { userInfo }: any = useContext(AuthContext);
   const [refresh, setRefresh] = useState(true);
+
+  route?.params?.StudentId
+    ? (userInfo.StudentId = route.params.StudentId)
+    : null;
   const getAllSubjects = () => {
     axios
-      .get(`${BASE_URL}/api/subjects/${userInfo['StudentId']}/student`)
+      .get(`${BASE_URL}/api/subjects/${userInfo.StudentId}/student`)
       .then((response) => {
         const topTierBackEnd = response.data.filter(
           (ele: subjectProps, index: number) =>
@@ -214,7 +218,7 @@ const Subjects = ({ navigation }: RootStackScreenProps<'Modal'>) => {
           <RefreshControl refreshing={refresh} onRefresh={getAllSubjects} />
         }
       >
-        {userSubject.map((value: subjectProps, key) => (
+        {userSubject?.map((value: subjectProps, key) => (
           <Pressable
             key={key.toString()}
             style={[styles.Node]}
@@ -246,7 +250,7 @@ const styles = StyleSheet.create({
   Subject: {
     //opacity: 0.1,
     //fontSize: 20,
-
+    backgroundColor: '#FDFDFD',
     alignSelf: 'center',
   },
   Node: {
@@ -259,7 +263,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
     //borderBottomRightRadius: 4,
     borderColor: '#4D0036',
-    shadowOpacity: 0.8,
+    //shadowOpacity: 0.8,
     elevation: 6,
     borderBottomWidth: 7,
     borderRightWidth: 4,

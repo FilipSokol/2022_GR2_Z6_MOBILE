@@ -23,6 +23,7 @@ export type RootStackParamList = {
   NotFound: undefined;
   Grades: { grade: subjectProps };
   Subjects: undefined;
+  Students: { group: number };
 };
 
 export type RootStackScreenProps<Screen extends keyof RootStackParamList> =

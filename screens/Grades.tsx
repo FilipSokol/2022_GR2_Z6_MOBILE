@@ -99,16 +99,18 @@ const Grades = ({ route }: RootStackScreenProps<'Grades'>) => {
           //setNum(key + 1);
           gradeShadow = value.markValue > 2 ? 'black' : 'red';
           //setMarks(marks + value.grade);
+          const when = new Date(value.dateOfIssue);
+          const dateString = when.toUTCString();
           return (
             <Pressable
               key={key.toString()}
-              style={styles.container}
+              style={styles.node}
               android_ripple={{ color: 'powderblue' }}
             >
               <View style={styles.grade}>
-                <Text style={{}}>{value.dateOfIssue}</Text>
-                <Text style={{}}>{value.description}</Text>
-                <Text style={{}}>{value.markValue}</Text>
+                <Text style={styles.text}>{dateString}</Text>
+                <Text style={styles.text}>{value.description}</Text>
+                <Text style={styles.text}>{value.markValue}</Text>
               </View>
             </Pressable>
           );
@@ -122,30 +124,21 @@ const styles = StyleSheet.create({
   container: {
     //alignItems: 'center',
     margin: 20,
-
+    backgroundColor: '#FDFDFD',
     //backgroundColor: COLORS.lightgrey,
     //backgroundColor: 'white',
     borderWidth: 3,
     borderColor: '#4D0036',
     borderRadius: 3,
     //elevation: 1,
-    shadowOpacity: 0.8,
-    shadowRadius: 3,
+    //shadowOpacity: 0.8,
+    //shadowRadius: 3,
     shadowColor: 'black',
     width: width * 0.8,
     height: height * 0.1,
     alignItems: 'center',
     justifyContent: 'center',
     padding: 10,
-    // backgroundColor: '#f4f4f4',
-    // justifyContent: 'center',
-    // margin: 10,
-    // borderWidth: 3,
-    // borderRadius: 10,
-    // borderColor: 'whitesmoke',
-    // shadowOpacity: 0.8,
-    // elevation: 6,
-    // shadowRadius: 15,
   },
   grade: {
     //margin: 1,
@@ -154,6 +147,26 @@ const styles = StyleSheet.create({
     //width: "100%",
     //height: "50%",
     alignItems: 'center',
+  },
+  text: {
+    alignSelf: 'center',
+    textAlign: 'center',
+    fontWeight: '500',
+    fontSize: 16,
+  },
+  node: {
+    backgroundColor: '#FDFDFD',
+    margin: 10,
+    width: width * 0.8,
+    borderColor: '#000022',
+    borderWidth: 2,
+    borderRightWidth: 4,
+    borderBottomWidth: 4,
+    borderRadius: 8,
+    borderStyle: 'solid',
+    //alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'row',
   },
 });
 

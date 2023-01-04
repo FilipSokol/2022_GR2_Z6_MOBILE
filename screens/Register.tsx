@@ -1,5 +1,6 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
+import { useForm } from 'react-hook-form';
 import {
   Button,
   Pressable,
@@ -7,29 +8,21 @@ import {
   TextInput,
   TouchableWithoutFeedback,
 } from 'react-native';
+import CustomInput from '../components/CustomInput';
 import { View, Text } from '../components/Themed';
+import { AuthContext } from '../context/authModel';
 import { BASE_URL } from '../context/config';
 import { RootHomeStackScreenProps } from '../types';
+import { EMAIL_REGEX } from './Login';
 
-const registerFrom = (
-  email: string,
-  password: string,
-  confirmPassword: string,
-) => {
-  const object = {
-    email: email,
-    password: password,
-    confirmPassword: confirmPassword,
-    //roleId: '0',
-  };
+interface userRegisterData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
 
-  axios
-    .post(`${BASE_URL}/api/account/register`, object, {
-      //headers: { 'Content-Type': 'multipart/form-data' },
-    })
-    .then((response) => console.log(response))
-    .catch((err) => console.log(err));
-};
 // {
 //   "firstName": "test1",
 //   "lastName": "test2",
@@ -45,24 +38,98 @@ const Register = ({
   navigation,
   route,
 }: RootHomeStackScreenProps<'Register'>) => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const { control, handleSubmit, watch } = useForm();
+  const pwd = watch('password');
+  const [created, setCreated] = useState(false);
+  const PASSWORD_REGEX = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,32}$/;
+  //const [email, setEmail] = useState('');
+  //const [password, setPassword] = useState('');
+  //const [confirmPassword, setConfirmPassword] = useState('');
+  const registerFrom = (data: userRegisterData | any) => {
+    const object = {
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password,
+      confirmPassword: data.confirmPassword,
+      roleId: '1',
+    };
+
+    axios
+      .post(`${BASE_URL}/api/account/register`, object, {
+        //headers: { 'Content-Type': 'multipart/form-data' },
+      })
+      .then((response) => {
+        console.log(response.status);
+        if (response.status == 200) {
+          setCreated(true);
+        }
+      })
+      .catch((err) => console.log(err));
+  };
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Register</Text>
-      <View
-        style={styles.separator}
-        lightColor="#eee"
-        darkColor="rgba(255,255,255,0.1)"
+      <CustomInput
+        name="firstName"
+        placeholder="First Name"
+        rules={{
+          required: 'First Name is required',
+        }}
+        control={control}
       />
-      <TextInput
+      <CustomInput
+        name="lastName"
+        placeholder="Last Name"
+        rules={{
+          required: 'Last Name is required',
+        }}
+        control={control}
+      />
+      <CustomInput
+        name="email"
         placeholder="Email"
-        style={styles.textInput}
-        onChangeText={(text) => setEmail(text)}
+        rules={{
+          required: 'Email is required',
+          pattern: { value: EMAIL_REGEX, message: 'Email is invalid' },
+        }}
+        control={control}
       />
-      <TextInput
+      <CustomInput
+        name="password"
+        placeholder="Password"
+        control={control}
+        rules={{
+          required: 'Password is required',
+          pattern: {
+            value: PASSWORD_REGEX,
+            message: 'Password should be minimum 8 characters long',
+          },
+          // minLength: {
+          //   value: 8,
+          //   message: 'Password should be minimum 8 characters long',
+          // },
+        }}
+        secureTextEntry
+      />
+      <CustomInput
+        name="confirmPassword"
+        placeholder="Confirm Password"
+        control={control}
+        rules={{
+          required: 'Password is required',
+          validate: (value) => value === pwd || 'Password do not match',
+        }}
+        secureTextEntry
+      />
+
+      {created ? (
+        <Text style={{ color: 'green', fontWeight: 'bold' }}>
+          Account have been created!
+        </Text>
+      ) : null}
+      {/* <TextInput
         placeholder="Password"
         style={styles.textInput}
         autoCorrect={false}
@@ -75,12 +142,9 @@ const Register = ({
         autoCorrect={false}
         secureTextEntry
         onChangeText={(text) => setConfirmPassword(text)}
-      />
+      /> */}
       <View style={{ width: 200, marginTop: 10 }}>
-        <Button
-          title={'Register'}
-          onPress={() => registerFrom(email, password, confirmPassword)}
-        />
+        <Button title={'Register'} onPress={handleSubmit(registerFrom)} />
       </View>
       <Text>
         Navigate to{' '}
@@ -117,6 +181,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ffffff',
   },
   title: {
+    padding: 20,
     fontSize: 20,
     fontWeight: 'bold',
   },

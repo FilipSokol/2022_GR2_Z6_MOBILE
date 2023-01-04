@@ -9,6 +9,11 @@ export type responseProps = {
   [key: string]: string;
 };
 
+export interface userDataProps {
+  email: string;
+  password: string;
+}
+
 export const AuthContext = createContext('');
 
 export const AuthProvider = ({ children }: any) => {
@@ -16,7 +21,9 @@ export const AuthProvider = ({ children }: any) => {
   const [userToken, setUserToken] = useState<string | null>(null);
   const [userInfo, setUserInfo] = useState<responseProps | string | null>(null);
 
-  const login = async (email: string, password: string) => {
+  const login = async (data: userDataProps) => {
+    const email = data.email;
+    const password = data.password;
     setIsLoading(true);
     axios
       .post(
@@ -29,20 +36,13 @@ export const AuthProvider = ({ children }: any) => {
       )
       .then((response) => {
         setUserToken(response.data['token']);
-        //console.log(response.data['token']);
         AsyncStorage.setItem('userToken', response.data['token']);
         const decoded = jwt_decode<responseProps>(response.data['token']);
         setUserInfo(decoded);
         AsyncStorage.setItem('userInfo', JSON.stringify(decoded));
-        // console.log(
-        //   decoded[
-        //     'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
-        //   ],
-        // );
       })
       .catch((e) => console.log(e));
-    //setUserToken('testToken');
-    //AsyncStorage.setItem('userToken', 'testToken');
+
     setIsLoading(false);
   };
 

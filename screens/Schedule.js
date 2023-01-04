@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { memo, useEffect, useState } from 'react';
 import { View, Dimensions, SafeAreaView } from 'react-native';
 import EventCalendar from 'react-native-events-calendar';
 import axios from 'axios';
@@ -67,14 +67,15 @@ const checkType = (type) => {
   }
 };
 
-
-const getData = (groupId) => {
+const getData = (groupId, teacher) => {
   let list = [];
+  const url = teacher
+    ? `${BASE_URL}/api/subjects/${teacher}/teacher`
+    : `${BASE_URL}/api/schedules/${groupId}`;
   axios
-    .get(`${BASE_URL}/api/schedules/${groupId}`)
+    .get(url)
     .then((result) => {
       result.data.forEach((element) => {
-        console.log(element);
         let obj = {
           color: checkType(element.type),
           start: element.startTime,
@@ -82,17 +83,13 @@ const getData = (groupId) => {
           title: element.name,
           summary: `${element.description}, ${element.type}`,
         };
-        //console.log(obj);
         list.push(obj);
-        //list.push(test);
-        //setEvents([...events, obj]);
-        //setEvents((events) => [...events, obj]);
-        //console.log(events);
       });
     })
     .catch((err) => {
       console.log(err);
     });
+  //console.log(url);
   return list;
 };
 
@@ -102,7 +99,7 @@ export const Schedule = (preload = []) => {
   const isFocused = useIsFocused();
   useEffect(() => {
     if (isFocused) {
-      setEvents(getData(userInfo['GroupId']));
+      setEvents(getData(userInfo?.GroupId, userInfo?.TeacherId));
     }
     //console.log('events', { events });
     //const resultt = getData();
@@ -112,7 +109,8 @@ export const Schedule = (preload = []) => {
       <View>
         <EventCalendar
           eventTapped={() => {
-            idk();
+            //idk();
+            console.log(events);
           }}
           // Function on event press
           events={events}
@@ -127,7 +125,7 @@ export const Schedule = (preload = []) => {
           // Number of date will render before and after initDate
           // (default is 30 will render 30 day before initDate
           // and 29 day after initDate)
-          initDate={'2022-11-26'}
+          //initDate={'2022-11-26'}
           // Show initial date (default is today)
           //scrollToFirst
           // Scroll to first event of the day (default true)
@@ -140,4 +138,4 @@ export const Schedule = (preload = []) => {
   );
 };
 
-export default Schedule;
+export default memo(Schedule);

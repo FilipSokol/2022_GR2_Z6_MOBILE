@@ -33,6 +33,10 @@ import NotFoundScreen from '../screens/NotFoundScreen';
 import Register from '../screens/Register';
 import TabOneScreen from '../screens/TabOneScreen';
 import TabTwoScreen from '../screens/TabTwoScreen';
+import TeacherAllStudents from '../screens/TeacherAllStudents';
+import TeacherGroupsScreen from '../screens/TeacherGroupsScreen';
+import TeacherGroupStudentsScreen from '../screens/TeacherGroupStudentsScreen';
+import UsersThree from '../assets/images/UsersThree.svg';
 import {
   RootHomeStackParamList,
   RootStackParamList,
@@ -118,6 +122,16 @@ function RootNavigator() {
           component={Grades}
           options={{ title: 'Grades', headerTitleAlign: 'center' }}
         />
+        <Stack.Screen
+          name="Students"
+          component={TeacherGroupStudentsScreen}
+          options={{ title: 'Students', headerTitleAlign: 'center' }}
+        />
+        <Stack.Screen
+          name="allStudents"
+          component={TeacherAllStudents}
+          options={{ title: 'All Students', headerTitleAlign: 'center' }}
+        />
       </Stack.Group>
     </Stack.Navigator>
   );
@@ -131,7 +145,7 @@ const BottomTab = createBottomTabNavigator<RootTabParamList>();
 
 function BottomTabNavigator() {
   const colorScheme = useColorScheme();
-
+  const { userInfo }: string | any = React.useContext(AuthContext);
   return (
     <BottomTab.Navigator
       initialRouteName="TabTwo"
@@ -197,21 +211,45 @@ function BottomTabNavigator() {
         gestureEnabled={false}
         options={{ headerShown: false }}
       /> */}
-      <BottomTab.Screen
-        name="TabThree"
-        component={ModalScreen}
-        options={({ navigation }: any) => ({
-          title: 'Grades',
-          headerTitleAlign: 'center',
-          headerStyle: {
-            backgroundColor: 'stealblue',
-          },
-          tabBarActiveBackgroundColor: '#313131',
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="graduation-cap" color={color} />
-          ),
-        })}
-      />
+      {!userInfo?.TeacherId ? (
+        <BottomTab.Screen
+          name="TabThree"
+          component={ModalScreen}
+          options={({ navigation }: any) => ({
+            title: 'Grades',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: 'stealblue',
+            },
+            tabBarActiveBackgroundColor: '#313131',
+            tabBarIcon: ({ color }) => (
+              <TabBarIcon name="graduation-cap" color={color} />
+            ),
+          })}
+        />
+      ) : (
+        <BottomTab.Screen
+          name="TabThree"
+          component={TeacherGroupsScreen}
+          options={({ navigation }: any) => ({
+            title: 'Group Panel',
+            headerTitleAlign: 'center',
+            headerStyle: {
+              backgroundColor: 'stealblue',
+            },
+            headerRight: () => (
+              <UsersThree
+                style={{ marginRight: 20 }}
+                onPress={() => {
+                  navigation.navigate('allStudents');
+                }}
+              />
+            ),
+            tabBarActiveBackgroundColor: '#313131',
+            tabBarIcon: ({ color }) => <TabBarIcon name="edit" color={color} />,
+          })}
+        />
+      )}
     </BottomTab.Navigator>
   );
 }
@@ -236,7 +274,6 @@ function BottomHomeTabNavigator() {
           ),
         }}
       />
-
       <HomeTab.Screen
         name={'Register'}
         component={Register}

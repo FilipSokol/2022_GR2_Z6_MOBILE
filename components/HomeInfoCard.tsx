@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { View, Text, StyleSheet, useWindowDimensions } from 'react-native';
 
 const HomeInfoCard = ({ props }: any) => {
@@ -32,4 +32,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HomeInfoCard;
+export default memo(HomeInfoCard);

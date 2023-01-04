@@ -56,7 +56,8 @@ const HomeDrawer = () => {
       <View style={{ margin: 10 }} />
       <HorizontalCard
         props={{
-          text: 'Check your Grades!',
+          text:
+            userRole == 'Student' ? 'Check your Grades!' : 'Check your Groups!',
           nav: 'TabThree',
           LeftIcon: PaperPlane,
           RightIcon: CaretRight,

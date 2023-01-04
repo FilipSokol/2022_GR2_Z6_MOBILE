@@ -6,7 +6,7 @@ import {
   Image,
   useWindowDimensions,
 } from 'react-native';
-import React from 'react';
+import React, { memo } from 'react';
 import { useNavigation } from '@react-navigation/native';
 
 const HorizontalCard = ({ props }: any) => {
@@ -50,4 +50,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default HorizontalCard;
+export default memo(HorizontalCard);
