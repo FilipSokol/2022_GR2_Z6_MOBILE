@@ -110,7 +110,7 @@ export const Schedule = (preload = []) => {
         <EventCalendar
           eventTapped={() => {
             //idk();
-            console.log(events);
+            //console.log(events);
           }}
           // Function on event press
           events={events}

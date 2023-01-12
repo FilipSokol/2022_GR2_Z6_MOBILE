@@ -3,7 +3,7 @@
     "name": "pai-6",
     "slug": "student-service-system",
     "owner": "svannte",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
     "scheme": "myapp",
@@ -32,6 +32,11 @@
     },
     "web": {
       "favicon": "./assets/images/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "e9e9ac29-b3e3-4424-9a8d-b40ec4f1fbb7"
+      }
     }
   }
 }

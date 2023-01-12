@@ -41,7 +41,7 @@ export const AuthProvider = ({ children }: any) => {
         setUserInfo(decoded);
         AsyncStorage.setItem('userInfo', JSON.stringify(decoded));
       })
-      .catch((e) => console.log(e));
+      .catch((e) => console.log('catch', e.toJSON()));
 
     setIsLoading(false);
   };
