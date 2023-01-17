@@ -8,16 +8,7 @@ import { BASE_URL } from '../context/config';
 import { AuthContext } from '../context/authModel';
 
 let { width } = Dimensions.get('window');
-const idk = async () => {
-  const response = await axios
-    .get('http://10.0.2.2:5000/api/subjects')
-    .then((data) => {
-      console.log(data.data);
-    })
-    .catch((err) => {
-      console.log(err);
-    });
-};
+
 
 let event = [
   {
@@ -87,7 +78,7 @@ const getData = (groupId, teacher) => {
       });
     })
     .catch((err) => {
-      console.log(err);
+      //console.log(err);
     });
   //console.log(url);
   return list;

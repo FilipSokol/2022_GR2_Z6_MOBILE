@@ -40,8 +40,8 @@ export const AuthProvider = ({ children }: any) => {
         const decoded = jwt_decode<responseProps>(response.data['token']);
         setUserInfo(decoded);
         AsyncStorage.setItem('userInfo', JSON.stringify(decoded));
-      })
-      .catch((e) => console.log('catch', e.toJSON()));
+      });
+      //.catch((e) => console.log('catch', e.toJSON()));
 
     setIsLoading(false);
   };
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }: any) => {
       }
       setIsLoading(false);
     } catch (e) {
-      console.log('isloggedIn error', e);
+      //console.log('isloggedIn error', e);
     }
   };
 

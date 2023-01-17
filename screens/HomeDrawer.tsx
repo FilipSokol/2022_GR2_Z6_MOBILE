@@ -30,7 +30,7 @@ const HomeDrawer = () => {
           ],
         )
       : null;
-    console.log(userInfo);
+    //console.log(userInfo);
   }, [userInfo]);
   return (
     <View

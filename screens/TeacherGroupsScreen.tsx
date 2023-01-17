@@ -31,7 +31,7 @@ const TeacherGroupsScreen = () => {
   const [students, setStudents] = useState<IStudentObject[]>([]);
   const navigation = useNavigation();
   const getGroupsStudents = async (groups: number[]) => {
-    console.log('here', groups);
+    //console.log('here', groups);
     groups?.map(async (value) => {
       const response = await axios.get(
         `${BASE_URL}/api/departments/${userInfo?.DepartmentId}/groups/${value}/students`,

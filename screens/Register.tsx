@@ -60,12 +60,12 @@ const Register = ({
         //headers: { 'Content-Type': 'multipart/form-data' },
       })
       .then((response) => {
-        console.log(response.status);
+        //console.log(response.status);
         if (response.status == 200) {
           setCreated(true);
         }
-      })
-      .catch((err) => console.log(err));
+      });
+    //.catch((err) => console.log(err));
   };
 
   return (

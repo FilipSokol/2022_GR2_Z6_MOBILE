@@ -9,7 +9,6 @@ import {
   ScrollView,
 } from 'react-native';
 import React, {
-  memo,
   useCallback,
   useContext,
   useEffect,
